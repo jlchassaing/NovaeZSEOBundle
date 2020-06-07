@@ -1,46 +1,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-{% for name, content in nova_ezseo.default_metas %}
-    {% if content is not empty %}
+{%- for name, content in nova_ezseo.default_metas -%}
+    {%- if content is not empty -%}
         <meta name="{{ name }}" content="{{ content }}"/>
-    {% endif %}
-{% endfor %}
+    {%- endif -%}
+{%- endfor -%}
 
-{% if content is defined and content.fields[nova_ezseo.fieldtype_metas_identifier] is defined %}
+{%- if content is defined and content.fields[nova_ezseo.fieldtype_metas_identifier] is defined -%}
     {{ ez_render_field( content, nova_ezseo.fieldtype_metas_identifier ) }}
-{% endif %}
+{%- endif -%}
 
-{% if content is defined and content.fields[nova_ezseo.fieldtype_metas_identifier] is not defined %}
-    {% if content.contentInfo.mainLocationId is defined and content.contentInfo.mainLocationId is not null %}
+{%- if content is defined and content.fields[nova_ezseo.fieldtype_metas_identifier] is not defined -%}
+    {%- if content.contentInfo.mainLocationId is defined and content.contentInfo.mainLocationId is not null -%}
         <link rel="canonical" href="{{ url( 'ez_urlalias', {'locationId': content.contentInfo.mainLocationId} ) }}" />
-    {% endif %}
-{% endif %}
+    {%- endif -%}
+{%- endif -%}
 
-{% for rel, attrs in nova_ezseo.default_links %}
-    {% if attrs.href is not empty %}
-        {% set href = attrs.href %}
-        {% if href.location_id is defined %}
-            {% set href = path( 'ez_urlalias', {'locationId': href.location_id } ) %}
-        {% elseif href.route is defined %}
-            {% set href = path( href.route ) %}
-        {% elseif href.asset is defined %}
-            {% if href.asset.package is defined %}
-                {% set href = asset( href.asset.path, href.asset.package ) %}
-            {% else %}
-                {% set href = asset( href.asset.path ) %}
-            {% endif %}
-        {% endif %}
-        <link rel="{{ rel }}"{% if attrs.type is defined %} type="{{ attrs.type }}"{% endif %}{% if attrs.title is defined %} title="{{ attrs.title }}"{% endif %} {% if not href is iterable %}href="{{ href }}"{% endif %}/>
-    {% endif %}
-{% endfor %}
+{%- for rel, attrs in nova_ezseo.default_links -%}
+    {%- if attrs.href is not empty -%}
+        {%- set href = attrs.href -%}
+        {%- if href.location_id is defined -%}
+            {%- set href = path( 'ez_urlalias', {'locationId': href.location_id } ) -%}
+        {%- elseif href.route is defined -%}
+            {%- set href = path( href.route ) -%}
+        {%- elseif href.asset is defined -%}
+            {%- if href.asset.package is defined -%}
+                {%- set href = asset( href.asset.path, href.asset.package ) -%}
+            {%- else -%}
+                {%- set href = asset( href.asset.path ) -%}
+            {%- endif -%}
+        {%- endif -%}
+        <link rel="{{ rel }}"{%- if attrs.type is defined -%} type="{{ attrs.type }}"{%- endif -%}{%- if attrs.title is defined -%} title="{{ attrs.title }}"{%- endif -%} {%- if not href is iterable -%}href="{{ href }}"{%- endif -%}/>
+    {%- endif -%}
+{%- endfor -%}
 
-{% if  ezpublish.availableLanguages|length > 1 %}
-    {% for lang in ezpublish.availableLanguages %}
-        {% if location is defined and not location.isDraft %}
+{%- if  ezpublish.availableLanguages|length > 1 -%}
+    {%- for lang in ezpublish.availableLanguages -%}
+        {%- if location is defined and not location.isDraft -%}
             <link rel="alternate" data-sa="{{ ezpublish.translationSiteAccess( lang ) }}" hreflang="{{ lang|getposixlocale_novaseometas }}" href="{{ url( location, {"siteaccess": ezpublish.translationSiteAccess( lang ) } ) }}" />
-        {% else %}
-            {% set route = ez_route( params={"language": lang} ) %}
+        {%- else -%}
+            {%- set route = ez_route( params={"language": lang} ) -%}
             {# we can't do the diff with 404 #}
             <link rel="alternate" hreflang="{{ lang|getposixlocale_novaseometas }}" href="{{ url( route ) }}" />
-        {% endif %}
-    {% endfor %}
-{% endif %}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endif -%}
