@@ -29,7 +29,7 @@
                 {%- set href = asset( href.asset.path ) -%}
             {%- endif -%}
         {%- endif -%}
-        <link rel="{{ rel }}"{%- if attrs.type is defined -%} type="{{ attrs.type }}"{%- endif -%}{%- if attrs.title is defined -%} title="{{ attrs.title }}"{%- endif -%} {%- if not href is iterable -%}href="{{ href }}"{%- endif -%}/>
+        <link rel="{{ rel }}"{% if attrs.type is defined %} type="{{ attrs.type }}"{% endif %}{% if attrs.title is defined %} title="{{ attrs.title }}"{% endif %} {% if not href is iterable %}href="{{ href }}"{% endif %}/>
     {%- endif -%}
 {%- endfor -%}
 
